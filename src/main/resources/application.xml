@@ -1,0 +1,7 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+    <bean id="customerManagementService"
+          class="se.yrgo.services.customers.CustomerManagementMockImpl"/>
+</beans>
