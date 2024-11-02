@@ -10,47 +10,47 @@ import se.yrgo.domain.Customer;
  * Mock implementation of the CustomerManagementService
  */
 public class CustomerManagementMockImpl implements CustomerManagementService {
-    private final HashMap<String, Customer> customerMap;
+    private final HashMap<String, Customer> CUSTOMER_MAP;
 
     public CustomerManagementMockImpl() {
-        customerMap = new HashMap<>();
-        customerMap.put("OB74", new Customer("OB74", "Fargo Ltd", "some notes"));
-        customerMap.put("NV10", new Customer("NV10", "North Ltd", "some other notes"));
-        customerMap.put("RM210", new Customer("RM210", "River Ltd", "some more notes"));
+        CUSTOMER_MAP = new HashMap<>();
+        CUSTOMER_MAP.put("OB74", new Customer("OB74", "Fargo Ltd", "some notes"));
+        CUSTOMER_MAP.put("NV10", new Customer("NV10", "North Ltd", "some other notes"));
+        CUSTOMER_MAP.put("RM210", new Customer("RM210", "River Ltd", "some more notes"));
     }
 
     @Override
     public void newCustomer(Customer newCustomer) throws IllegalArgumentException {
         // Do not add the new customer if they already exist
-        if (customerMap.containsKey(newCustomer.getCustomerId())) {
+        if (CUSTOMER_MAP.containsKey(newCustomer.getCustomerId())) {
             throw new IllegalArgumentException("Customer with that ID already exists");
         }
-        customerMap.put(newCustomer.getCustomerId(), newCustomer);
+        CUSTOMER_MAP.put(newCustomer.getCustomerId(), newCustomer);
     }
 
     @Override
     public void updateCustomer(Customer changedCustomer) {
-        if (!customerMap.containsKey(changedCustomer.getCustomerId())) {
+        if (!CUSTOMER_MAP.containsKey(changedCustomer.getCustomerId())) {
             // Would like to throw "CustomerNotFoundException" here, but I don't want to change code in interface
             // Fail silently
             return;
         }
-        customerMap.replace(changedCustomer.getCustomerId(), changedCustomer);
+        CUSTOMER_MAP.replace(changedCustomer.getCustomerId(), changedCustomer);
     }
 
     @Override
     public void deleteCustomer(Customer oldCustomer) {
-        if (!customerMap.containsKey(oldCustomer.getCustomerId())) {
+        if (!CUSTOMER_MAP.containsKey(oldCustomer.getCustomerId())) {
             // Would like to throw "CustomerNotFoundException" here, but I don't want to change code in interface
             // Fail silently
             return;
         }
-        customerMap.remove(oldCustomer.getCustomerId());
+        CUSTOMER_MAP.remove(oldCustomer.getCustomerId());
     }
 
     @Override
     public Customer findCustomerById(String customerId) throws CustomerNotFoundException {
-        var customer = customerMap.get(customerId);
+        var customer = CUSTOMER_MAP.get(customerId);
         if (customer == null) {
             throw new CustomerNotFoundException();
         }
@@ -64,20 +64,20 @@ public class CustomerManagementMockImpl implements CustomerManagementService {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Company name cannot be null or empty");
         }
-        return customerMap.values().stream()
+        return CUSTOMER_MAP.values().stream()
                 .filter(x -> x.getCompanyName().equalsIgnoreCase(name))
                 .toList();
     }
 
     @Override
     public List<Customer> getAllCustomers() {
-        return customerMap.values().stream()
+        return CUSTOMER_MAP.values().stream()
                 .toList();
     }
 
     @Override
     public Customer getFullCustomerDetail(String customerId) throws CustomerNotFoundException {
-        var customer = customerMap.get(customerId);
+        var customer = CUSTOMER_MAP.get(customerId);
         if (customer == null) {
             throw new CustomerNotFoundException();
         }
@@ -87,7 +87,7 @@ public class CustomerManagementMockImpl implements CustomerManagementService {
 
     @Override
     public void recordCall(String customerId, Call callDetails) throws CustomerNotFoundException {
-        var customer = customerMap.get(customerId);
+        var customer = CUSTOMER_MAP.get(customerId);
         if (customer == null) {
             throw new CustomerNotFoundException();
         } else if (callDetails == null) {
