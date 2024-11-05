@@ -14,5 +14,7 @@ public class SimpleClient {
         for (Customer customer : allCustomers) {
             System.out.println(customer);
         }
+
+        container.close();
     }
 }
