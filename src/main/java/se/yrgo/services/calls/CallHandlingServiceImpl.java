@@ -8,6 +8,12 @@ import se.yrgo.services.diary.DiaryManagementService;
 
 import java.util.Collection;
 
+/**
+ * Main service for customer calls. Dependent on these two services:
+ *
+ * @see CustomerManagementService
+ * @see DiaryManagementService
+ */
 public class CallHandlingServiceImpl implements CallHandlingService {
     private CustomerManagementService cms;
     private DiaryManagementService dms;
