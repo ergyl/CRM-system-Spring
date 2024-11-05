@@ -1,6 +1,7 @@
 package se.yrgo.domain;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,9 +50,9 @@ public class Action {
 
 
 	public boolean isOverdue()	{
-		Calendar dateNow = new java.util.GregorianCalendar();
+		Calendar currentDate = new GregorianCalendar();
 
-		return dateNow.after(this.requiredBy);
+		return currentDate.after(this.requiredBy);
 	}
 
 
