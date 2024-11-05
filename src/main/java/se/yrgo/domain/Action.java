@@ -44,7 +44,7 @@ public class Action {
 		this.complete = complete;
 
 
-		this.actionId = new Integer(actionId);
+		this.actionId = Integer.parseInt(actionId);
 	}
 
 
