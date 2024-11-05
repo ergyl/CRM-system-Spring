@@ -10,8 +10,9 @@ public class DiaryManagementServiceMockImpl implements DiaryManagementService {
 
     @Override
     public void recordAction(Action action) {
-
-
+        if (action != null) {
+            allActions.add(action);
+        }
     }
 
     public List<Action> getAllIncompleteActions(String requiredUser) {
