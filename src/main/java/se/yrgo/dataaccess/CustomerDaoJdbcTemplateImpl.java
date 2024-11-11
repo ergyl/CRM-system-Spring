@@ -50,7 +50,7 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
             SELECT CUSTOMER_ID, COMPANY_NAME, EMAIL, PHONE, NOTES FROM CUSTOMER WHERE CUSTOMER_ID=?
             """;
     private static final String GET_BY_NAME_SQL = """
-            SELECT CUSTOMER_ID, COMPANY_NAME, EMAIL, PHONE FROM CUSTOMER WHERE COMPANY_NAME=?
+            SELECT CUSTOMER_ID, COMPANY_NAME, EMAIL, PHONE, NOTES FROM CUSTOMER WHERE COMPANY_NAME=?
             """;
     private static final String GET_ALL_SQL = """
             SELECT CUSTOMER_ID, COMPANY_NAME, EMAIL, PHONE FROM CUSTOMER
@@ -102,7 +102,7 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
 
     @Override
     public List<Customer> getByName(String name) {
-        return jdbcTemplate.query(GET_BY_NAME_SQL, new CustomerCompleteRowMapper(), name, false);
+        return jdbcTemplate.query(GET_BY_NAME_SQL, new CustomerLightRowMapper(), name);
     }
 
     @Override
