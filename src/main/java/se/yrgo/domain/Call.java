@@ -2,24 +2,21 @@ package se.yrgo.domain;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Represents a single call made by a customer.
  * For example: Jim Called from HB at 10.30 at 15 November 2019
  */
 @Entity
-@Table(name="TBL_CALL")
+@Table(name="CUSTOMER_CALL")
 public class Call {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 
+	@Column(name = "TIME_AND_DATE")
 	private Date timeAndDate;
 
 	private String notes;

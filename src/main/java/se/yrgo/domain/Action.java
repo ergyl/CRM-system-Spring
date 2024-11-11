@@ -14,98 +14,100 @@ import javax.persistence.Id;
  */
 @Entity
 public class Action {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int actionId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int actionId;
 
 
-	private String details;
+    private String details;
 
 
-	private Calendar requiredBy;
+    private Calendar requiredBy;
 
 
-	private String owningUser;
+    private String owningUser;
 
 
-	private boolean complete;
+    private boolean complete;
 
 
-	public Action(String details, Calendar requiredBy, String owningUser){
-		this.details = details;
-		this.requiredBy = requiredBy;
-		this.owningUser = owningUser;
-		this.complete = false;
-	}
+    public Action(String details, Calendar requiredBy, String owningUser) {
+        this.details = details;
+        this.requiredBy = requiredBy;
+        this.owningUser = owningUser;
+        this.complete = false;
+    }
 
-	public Action(String actionId, String details, Calendar requiredBy, String owningUser, boolean complete){
-		this.details = details;
-		this.requiredBy = requiredBy;
-		this.owningUser = owningUser;
-		this.complete = complete;
-
-
-		this.actionId = Integer.parseInt(actionId);
-	}
+    public Action(String actionId, String details, Calendar requiredBy, String owningUser, boolean complete) {
+        this.details = details;
+        this.requiredBy = requiredBy;
+        this.owningUser = owningUser;
+        this.complete = complete;
 
 
-	public boolean isOverdue()	{
-		Calendar currentDate = new GregorianCalendar();
-
-		return currentDate.after(this.requiredBy);
-	}
+        this.actionId = Integer.parseInt(actionId);
+    }
 
 
-	public String toString()	{
-		return "Action for " + this.owningUser + ": " + this.details + ", required by " + this.requiredBy.getTime();
-	}
+    public boolean isOverdue() {
+        Calendar currentDate = new GregorianCalendar();
+
+        return currentDate.after(this.requiredBy);
+    }
 
 
-	public void completeAction()	{
-		this.complete = true;
-	}
+    public String toString() {
+        return "Action " + "for " + this.owningUser + ": " + this.details
+                + ", required by " + this.requiredBy.getTime();
+    }
 
 
-	public boolean isComplete() 	{
-		return this.complete;
-	}
-
-	public String getOwningUser() {
-		return owningUser;
-	}
-
-	public String getDetails() {
-		return details;
-	}
-
-	public void setDetails(String details) {
-		this.details = details;
-	}
-
-	public Calendar getRequiredBy() {
-		return requiredBy;
-	}
-
-	public void setRequiredBy(Calendar requiredBy) {
-		this.requiredBy = requiredBy;
-	}
-
-	public void setOwningUser(String owningUser) {
-		this.owningUser = owningUser;
-	}
-
-	public void setComplete(boolean complete) {
-		this.complete = complete;
-	}
-
-	public int getActionId() {
-		return actionId;
-	}
-
-	public void setActionId(int actionId) {
-		this.actionId = actionId;
-	}
+    public void completeAction() {
+        this.complete = true;
+    }
 
 
-	public Action() {}
+    public boolean isComplete() {
+        return this.complete;
+    }
+
+    public String getOwningUser() {
+        return owningUser;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public Calendar getRequiredBy() {
+        return requiredBy;
+    }
+
+    public void setRequiredBy(Calendar requiredBy) {
+        this.requiredBy = requiredBy;
+    }
+
+    public void setOwningUser(String owningUser) {
+        this.owningUser = owningUser;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+    public int getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(int actionId) {
+        this.actionId = actionId;
+    }
+
+
+    public Action() {
+    }
 }

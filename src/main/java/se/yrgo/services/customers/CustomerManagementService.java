@@ -13,15 +13,15 @@ public interface CustomerManagementService {
     public void newCustomer(Customer newCustomer);
 
 
-    public void updateCustomer(Customer changedCustomer);
+    public void updateCustomer(Customer changedCustomer) throws CustomerNotFoundException;
 
 
-    public void deleteCustomer(Customer oldCustomer);
+    public void deleteCustomer(Customer oldCustomer) throws CustomerNotFoundException;
 
 
     public Customer findCustomerById(String customerId) throws CustomerNotFoundException;
 
-    public List<Customer> findCustomersByName(String name);
+    public List<Customer> findCustomersByName(String name) throws CustomerNotFoundException;
 
     public List<Customer> getAllCustomers();
 
