@@ -58,4 +58,7 @@ out/
 *.tar.gz
 *.rar
 
-
+# db stuff
+database.dat.lck
+database.dat.properties
+database.dat.script
