@@ -10,54 +10,66 @@ import se.yrgo.services.customers.CustomerNotFoundException;
 import se.yrgo.services.diary.DiaryManagementService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SimpleClient {
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext container = new ClassPathXmlApplicationContext("application.xml");
+        // try-with-resources to close container in all scenarios
+        try (ClassPathXmlApplicationContext container = new ClassPathXmlApplicationContext("application.xml")) {
 
-        CustomerManagementService cms = container.getBean(CustomerManagementService.class);
-        DiaryManagementService dms = container.getBean(DiaryManagementService.class);
-        CallHandlingService chs = container.getBean(CallHandlingService.class);
+            CustomerManagementService cms = container.getBean(CustomerManagementService.class);
+            DiaryManagementService dms = container.getBean(DiaryManagementService.class);
+            CallHandlingService callService = container.getBean(CallHandlingService.class);
 
-        // Some code to see if our services seem to be working as expected...
-        Call newCall = new Call("North Ltd wants a discount for a new ARI440k system");
-        Action action1 = new Action("Give North Ltd 10 % discount for ARI440K system",
-                new GregorianCalendar(2024, 11, 04), "Carrie Diaz");
-        Action action2 = new Action("Follow up if customer placed an order",
-                new GregorianCalendar(2024, 12, 05), "Carrie Diaz");
+            // Some code to see if our CMS seems to be working as expected...
 
-        var actions = new ArrayList<>(List.of(action1, action2));
+            cms.newCustomer(new Customer("CS090933", "Acme",
+                    "hello@helloacme.com", "49-249249-20", "VIP customer"));
 
-        try {
-            chs.recordCall("NV10", newCall, actions);
-        } catch (CustomerNotFoundException ex) {
-            System.err.println("The customer does not exist");
+            var newCall = new Call("Barry asked for 10 % discount on EPTEP system");
+            var action1 = new Action("Contact sales department to get discount offer for customer",
+                    new GregorianCalendar(2024, Calendar.NOVEMBER, 15), "hargy");
+            var action2 = new Action("Call back Barry with discount offer",
+                    new GregorianCalendar(2024, Calendar.NOVEMBER, 18), "hargy");
+
+            var actions = new ArrayList<Action>(List.of(action1, action2));
+            Customer customerLight = null;
+            Customer customerDetails = null;
+
+            try {
+                callService.recordCall("CS090933", newCall, actions);
+                customerLight = cms.findCustomerById("CS090933");
+                customerDetails = cms.getFullCustomerDetail("CS090933");
+            } catch (CustomerNotFoundException ex) {
+                System.err.println("That customer does not exist");
+            }
+
+            if (customerLight != null) {
+                System.out.println("Light customer info:");
+                System.out.println(customerLight);
+                System.out.println("email: " + customerLight.getEmail());
+                System.out.println("phone: " + customerLight.getTelephone());
+                System.out.println("notes: " + customerLight.getNotes());
+                System.out.println("calls: " + customerLight.getCalls());
+                System.out.println("--------------------------");
+            }
+
+            if (customerDetails != null) {
+                System.out.println("Full customer info:");
+                System.out.println(customerDetails);
+                System.out.println("email: " + customerDetails.getEmail());
+                System.out.println("phone: " + customerDetails.getTelephone());
+                System.out.println("notes: " + customerDetails.getNotes());
+                System.out.println("calls: " + customerDetails.getCalls());
+                System.out.println("--------------------------");
+            }
+
+
+            System.out.println("Here are the outstanding actions:");
+            var incompleteActions = dms.getAllIncompleteActions("hargy");
+            incompleteActions.forEach(System.out::println);
         }
-
-
-        Customer customer;
-
-        try {
-            final var NONE = "---";
-            customer = cms.getFullCustomerDetail("NV10");
-            System.out.println("Customer details for " + customer.getCompanyName() + ":");
-            System.out.println("id: " + customer.getCustomerId());
-            System.out.println("company name: " + customer.getCompanyName());
-            System.out.println("email: " + (customer.getEmail() == null ? NONE : customer.getEmail()));
-            System.out.println("phone: " + (customer.getTelephone() == null ? NONE : customer.getTelephone()));
-            System.out.println("notes: " + (customer.getNotes() == null ? NONE : customer.getNotes()));
-            System.out.println("registered calls: " + (customer.getCalls() == null ? NONE : customer.getCalls()));
-        } catch (CustomerNotFoundException e) {
-            System.err.println("The customer does not exist");
-        }
-        var incompleteActions = dms.getAllIncompleteActions("Carrie Diaz");
-
-        System.out.println(System.lineSeparator() + "All registered actions:");
-
-        incompleteActions.forEach(System.out::println);
-
-        container.close();
     }
 }

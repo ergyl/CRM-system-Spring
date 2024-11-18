@@ -3,10 +3,7 @@ package se.yrgo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 /**
  * Represents a single customer, and it has all the details such as
@@ -22,6 +19,7 @@ public class Customer {
 
     private String email;
 
+    @Column(name = "PHONE")
     private String telephone;
 
     private String notes;
@@ -46,7 +44,6 @@ public class Customer {
     public void addCall(Call callDetails) {
         this.calls.add(callDetails);
     }
-
 
     public String toString() {
         return this.customerId + ": " + this.companyName;
