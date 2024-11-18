@@ -20,7 +20,7 @@ public class SimpleClient {
         try (ClassPathXmlApplicationContext container = new ClassPathXmlApplicationContext("application.xml")) {
 
             CustomerManagementService cms = container.getBean(CustomerManagementService.class);
-            DiaryManagementService dms = container.getBean(DiaryManagementService.class);
+            DiaryManagementService diaryManagementService = container.getBean(DiaryManagementService.class);
             CallHandlingService callService = container.getBean(CallHandlingService.class);
 
             // Some code to see if our CMS seems to be working as expected...
@@ -30,11 +30,11 @@ public class SimpleClient {
 
             var newCall = new Call("Barry asked for 10 % discount on EPTEP system");
             var action1 = new Action("Contact sales department to get discount offer for customer",
-                    new GregorianCalendar(2024, Calendar.NOVEMBER, 15), "hargy");
+                    new GregorianCalendar(2025, Calendar.NOVEMBER, 15), "hargy");
             var action2 = new Action("Call back Barry with discount offer",
-                    new GregorianCalendar(2024, Calendar.NOVEMBER, 18), "hargy");
+                    new GregorianCalendar(2025, Calendar.NOVEMBER, 18), "hargy");
 
-            var actions = new ArrayList<Action>(List.of(action1, action2));
+            var actions = new ArrayList<>(List.of(action1, action2));
             Customer customerLight = null;
             Customer customerDetails = null;
 
@@ -68,7 +68,7 @@ public class SimpleClient {
 
 
             System.out.println("Here are the outstanding actions:");
-            var incompleteActions = dms.getAllIncompleteActions("hargy");
+            var incompleteActions = diaryManagementService.getAllIncompleteActions("hargy");
             incompleteActions.forEach(System.out::println);
         }
     }
