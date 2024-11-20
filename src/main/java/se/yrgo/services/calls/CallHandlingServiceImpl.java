@@ -1,5 +1,6 @@
 package se.yrgo.services.calls;
 
+import org.springframework.transaction.annotation.Transactional;
 import se.yrgo.domain.Action;
 import se.yrgo.domain.Call;
 import se.yrgo.services.customers.CustomerManagementService;
@@ -14,6 +15,7 @@ import java.util.Collection;
  * @see CustomerManagementService
  * @see DiaryManagementService
  */
+@Transactional
 public class CallHandlingServiceImpl implements CallHandlingService {
     private CustomerManagementService cms;
     private DiaryManagementService dms;
