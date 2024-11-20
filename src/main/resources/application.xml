@@ -2,13 +2,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
-					http://www.springframework.org/schema/beans
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 					http://www.springframework.org/schema/beans/spring-beans.xsd
 					http://www.springframework.org/schema/aop
 					http://www.springframework.org/schema/aop/spring-aop.xsd
 					http://www.springframework.org/schema/tx
-					http://www.springframework.org/schema/tx/spring-tx.xsd">
+					http://www.springframework.org/schema/tx/spring-tx.xsd
+					http://www.springframework.org/schema/context
+					https://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- DBCP Apache -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -21,42 +23,13 @@
 
     <!-- Jdbc template -->
     <bean id="jdbcTemplate"
-          class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg ref="dataSource"/>
-    </bean>
-
-    <!-- Daos -->
-    <bean id="customerDao"
-          class="se.yrgo.dataaccess.CustomerDaoJdbcTemplateImpl"
-          init-method="createTables">
-        <constructor-arg ref="jdbcTemplate"/>
-    </bean>
-
-    <bean id="actionDao" class="se.yrgo.dataaccess.ActionDaoJdbcImpl"
-          init-method="createTables">
-        <constructor-arg ref="jdbcTemplate"/>
-    </bean>
-
-    <!-- Services -->
-    <bean id="customerManagementService"
-          class="se.yrgo.services.customers.CustomerServiceProductionImpl">
-        <constructor-arg ref="customerDao"/>
-    </bean>
-
-    <bean id="diaryManagementService"
-          class="se.yrgo.services.diary.DiaryManagementServiceMockImpl"/>
-
-    <bean id="callHandlingService"
-          class="se.yrgo.services.calls.CallHandlingServiceImpl">
-        <constructor-arg ref="customerManagementService"/>
-        <constructor-arg ref="diaryManagementService"/>
-    </bean>
+          class="org.springframework.jdbc.core.JdbcTemplate"
+          autowire="constructor"/>
 
     <!-- Transaction Manager -->
     <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          autowire="byName"/>
 
     <!-- Transaction Configuration -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
@@ -72,5 +45,5 @@
                                        || execution(* se.yrgo.dataaccess..*(..))"/>
         </aop:aspect>
     </aop:config>
-
+    <context:component-scan base-package="se.yrgo"/>
 </beans>
