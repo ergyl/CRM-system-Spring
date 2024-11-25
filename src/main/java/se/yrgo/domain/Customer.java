@@ -3,7 +3,7 @@ package se.yrgo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * Represents a single customer, and it has all the details such as
