@@ -46,7 +46,7 @@ public class SimpleClient {
                 System.err.println("That customer does not exist");
             }
 
-            if (customerLight != null) {
+  /*          if (customerLight != null) {
                 System.out.println("Light customer info:");
                 System.out.println(customerLight);
                 System.out.println("email: " + customerLight.getEmail());
@@ -64,12 +64,11 @@ public class SimpleClient {
                 System.out.println("notes: " + customerDetails.getNotes());
                 System.out.println("calls: " + customerDetails.getCalls());
                 System.out.println("--------------------------");
-            }
+            }*/
 
-
-            System.out.println("Here are the outstanding actions:");
             var incompleteActions = diaryManagementService.getAllIncompleteActions("hargy");
-            incompleteActions.forEach(System.out::println);
+       /*     System.out.println("Here are the outstanding actions:");
+            incompleteActions.forEach(System.out::println);*/
         }
     }
 }
