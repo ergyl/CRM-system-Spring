@@ -16,7 +16,7 @@ import se.yrgo.domain.Action;
 
 import javax.annotation.PostConstruct;
 
-@Repository
+//@Repository
 public class ActionDaoJdbcImpl implements ActionDao {
     private JdbcTemplate template;
     private static final String DELETE_SQL = "DELETE FROM ACTION WHERE ACTION_ID=?";
@@ -24,7 +24,7 @@ public class ActionDaoJdbcImpl implements ActionDao {
     private static final String INSERT_SQL = "INSERT INTO ACTION (DETAILS, COMPLETE, OWNING_USER, REQUIRED_BY) VALUES (?,?,?,?)";
     private static final String GET_INCOMPLETE_SQL = "SELECT ACTION_ID, DETAILS, COMPLETE, OWNING_USER, REQUIRED_BY FROM ACTION WHERE OWNING_USER=? AND COMPLETE=?";
 
-    @Autowired
+    //@Autowired
     public ActionDaoJdbcImpl(JdbcTemplate template) {
         this.template = template;
     }
