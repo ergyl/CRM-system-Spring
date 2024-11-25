@@ -28,7 +28,7 @@
 
     <!-- Transaction Manager -->
     <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager"
           autowire="byName"/>
 
     <!-- Transaction Configuration -->
