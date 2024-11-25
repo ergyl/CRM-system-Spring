@@ -1,0 +1,88 @@
+package se.yrgo.dataaccess;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import se.yrgo.domain.Action;
+import se.yrgo.domain.Call;
+import se.yrgo.domain.Customer;
+
+import java.util.List;
+
+@Repository
+public class CustomerDaoJpaImpl implements CustomerDao {
+    @PersistenceContext
+    private EntityManager em;
+
+    @Override
+    public void create(Customer customer) {
+        em.persist(customer);
+    }
+
+    @Override
+    public Customer getById(String customerId) throws RecordNotFoundException {
+        final var q = "SELECT customer FROM Customer AS customer"
+                + " WHERE customer.customerId=:customerId";
+        return em.createQuery(q, Customer.class)
+                .setParameter("customerId", customerId)
+                .getSingleResult();
+    }
+
+    @Override
+    public List<Customer> getByName(String name) throws RecordNotFoundException {
+        return em.createQuery("SELECT customer FROM Customer AS customer"
+                        + " WHERE customer.companyName=:companyName", Customer.class)
+                .setParameter("companyName", name)
+                .getResultList();
+    }
+
+    @Override
+    public void update(Customer customerToUpdate) throws RecordNotFoundException {
+        var existingCustomer = em.find(Customer.class, customerToUpdate.getCustomerId());
+
+        if (existingCustomer == null) {
+            throw new RecordNotFoundException();
+        }
+
+        existingCustomer.setCompanyName(customerToUpdate.getCompanyName());
+        existingCustomer.setEmail(customerToUpdate.getEmail());
+        existingCustomer.setTelephone(customerToUpdate.getTelephone());
+        existingCustomer.setNotes(customerToUpdate.getNotes());
+    }
+
+    @Override
+    public void delete(Customer oldCustomer) throws RecordNotFoundException {
+        var customerToDelete = em.find(Customer.class, oldCustomer.getCustomerId());
+        if (customerToDelete == null) {
+            throw new RecordNotFoundException();
+        }
+        em.remove(customerToDelete);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return em.createQuery("SELECT customer FROM Customer AS customer", Customer.class)
+                .getResultList();
+    }
+
+    @Override
+    public Customer getFullCustomerDetail(String customerId) throws RecordNotFoundException {
+        var existingCustomer = em.find(Customer.class, customerId);
+        if (existingCustomer == null) {
+            throw new RecordNotFoundException();
+        }
+        return em.createQuery("SELECT c.id, c.companyName, c.email, c.telephone, c.notes " +
+                        "FROM Customer c LEFT JOIN c.calls WHERE c.id =:customerId", Customer.class)
+                .setParameter("customerId", customerId)
+                .getSingleResult();
+    }
+
+    @Override
+    public void addCall(Call newCall, String customerId) throws RecordNotFoundException {
+        var existingCustomer = em.find(Customer.class, customerId);
+        if (existingCustomer == null) {
+            throw new RecordNotFoundException();
+        }
+        existingCustomer.addCall(newCall);
+    }
+}
