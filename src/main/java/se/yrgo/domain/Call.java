@@ -2,7 +2,7 @@ package se.yrgo.domain;
 
 import java.util.Date;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 /**
  * Represents a single call made by a customer.

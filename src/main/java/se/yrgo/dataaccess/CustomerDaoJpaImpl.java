@@ -1,9 +1,8 @@
 package se.yrgo.dataaccess;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.persistence.*;
+
 import org.springframework.stereotype.Repository;
-import se.yrgo.domain.Action;
 import se.yrgo.domain.Call;
 import se.yrgo.domain.Customer;
 
@@ -23,17 +22,26 @@ public class CustomerDaoJpaImpl implements CustomerDao {
     public Customer getById(String customerId) throws RecordNotFoundException {
         final var q = "SELECT customer FROM Customer AS customer"
                 + " WHERE customer.customerId=:customerId";
-        return em.createQuery(q, Customer.class)
+        var result = em.createQuery(q, Customer.class)
                 .setParameter("customerId", customerId)
                 .getSingleResult();
+        if (result == null) {
+            throw new RecordNotFoundException();
+        }
+        return result;
     }
 
     @Override
     public List<Customer> getByName(String name) throws RecordNotFoundException {
-        return em.createQuery("SELECT customer FROM Customer AS customer"
+        var result = em.createQuery("SELECT customer FROM Customer AS customer"
                         + " WHERE customer.companyName=:companyName", Customer.class)
                 .setParameter("companyName", name)
                 .getResultList();
+
+        if (result == null) {
+            throw new RecordNotFoundException();
+        }
+        return result;
     }
 
     @Override
