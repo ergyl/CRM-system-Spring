@@ -75,14 +75,18 @@ public class CustomerDaoJpaImpl implements CustomerDao {
 
     @Override
     public Customer getFullCustomerDetail(String customerId) throws RecordNotFoundException {
-        var existingCustomer = em.find(Customer.class, customerId);
-        if (existingCustomer == null) {
-            throw new RecordNotFoundException();
-        }
-        return em.createQuery("SELECT c.id, c.companyName, c.email, c.telephone, c.notes " +
-                        "FROM Customer c LEFT JOIN c.calls WHERE c.id =:customerId", Customer.class)
+        var query = """
+                SELECT customer FROM Customer AS customer
+                LEFT JOIN FETCH customer.calls
+                WHERE customer.customerId =:customerId
+                """;
+        var customer = em.createQuery(query, Customer.class)
                 .setParameter("customerId", customerId)
                 .getSingleResult();
+        if (customer == null) {
+            throw new RecordNotFoundException();
+        }
+        return customer;
     }
 
     @Override
