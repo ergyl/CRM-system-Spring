@@ -17,7 +17,7 @@ import java.util.List;
 public class SimpleClient {
     public static void main(String[] args) {
         // try-with-resources to close container in all scenarios
-        try (ClassPathXmlApplicationContext container = new ClassPathXmlApplicationContext("application.xml")) {
+        try (ClassPathXmlApplicationContext container = new ClassPathXmlApplicationContext("application-production.xml")) {
 
             CustomerManagementService cms = container.getBean(CustomerManagementService.class);
             DiaryManagementService diaryManagementService = container.getBean(DiaryManagementService.class);
