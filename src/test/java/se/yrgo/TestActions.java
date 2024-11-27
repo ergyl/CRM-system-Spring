@@ -1,3 +1,5 @@
+package se.yrgo;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import se.yrgo.domain.Action;
