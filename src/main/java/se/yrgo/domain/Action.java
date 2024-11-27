@@ -1,12 +1,9 @@
 package se.yrgo.domain;
 
+import javax.persistence.*;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  * Represents a job that we have to perform as the result of a call.

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Repository
+//@Repository
 public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
     private JdbcTemplate jdbcTemplate;
 
@@ -79,7 +79,7 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
             VALUES (?,?,?)
             """;
 
-    @Autowired
+    //@Autowired
     public CustomerDaoJdbcTemplateImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -42,33 +42,36 @@ public class SimpleClient {
                 callService.recordCall("CS090933", newCall, actions);
                 customerLight = cms.findCustomerById("CS090933");
                 customerDetails = cms.getFullCustomerDetail("CS090933");
+
+                if (customerLight != null) {
+                    System.out.println("############################");
+                    System.out.println("Light customer info:");
+                    System.out.println(customerLight);
+                    System.out.println("email: " + customerLight.getEmail());
+                    System.out.println("phone: " + customerLight.getTelephone());
+                    System.out.println("notes: " + customerLight.getNotes());
+                    System.out.println("############################");
+                }
+
+                if (customerDetails != null) {
+                    System.out.println("############################");
+                    System.out.println("Full customer info:");
+                    System.out.println(customerDetails);
+                    System.out.println("email: " + customerDetails.getEmail());
+                    System.out.println("phone: " + customerDetails.getTelephone());
+                    System.out.println("notes: " + customerDetails.getNotes());
+                    System.out.println("calls: " + customerDetails.getCalls());
+                    System.out.println("############################");
+
+                    var incompleteActions = diaryManagementService.getAllIncompleteActions("hargy");
+                    System.out.println("############################");
+                    System.out.println("Here are the outstanding actions:");
+                    incompleteActions.forEach(System.out::println);
+                    System.out.println("############################");
+                }
             } catch (CustomerNotFoundException ex) {
                 System.err.println("That customer does not exist");
             }
-
-  /*          if (customerLight != null) {
-                System.out.println("Light customer info:");
-                System.out.println(customerLight);
-                System.out.println("email: " + customerLight.getEmail());
-                System.out.println("phone: " + customerLight.getTelephone());
-                System.out.println("notes: " + customerLight.getNotes());
-                System.out.println("calls: " + customerLight.getCalls());
-                System.out.println("--------------------------");
-            }
-
-            if (customerDetails != null) {
-                System.out.println("Full customer info:");
-                System.out.println(customerDetails);
-                System.out.println("email: " + customerDetails.getEmail());
-                System.out.println("phone: " + customerDetails.getTelephone());
-                System.out.println("notes: " + customerDetails.getNotes());
-                System.out.println("calls: " + customerDetails.getCalls());
-                System.out.println("--------------------------");
-            }*/
-
-            var incompleteActions = diaryManagementService.getAllIncompleteActions("hargy");
-       /*     System.out.println("Here are the outstanding actions:");
-            incompleteActions.forEach(System.out::println);*/
         }
     }
 }
