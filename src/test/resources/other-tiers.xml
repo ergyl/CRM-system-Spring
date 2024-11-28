@@ -12,14 +12,7 @@
 					http://www.springframework.org/schema/context
 					https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- DBCP Apache -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
-        <property name="url" value
-                ="jdbc:hsqldb:file:database.dat;shutdown=true"/>
-        <property name="username" value="sa"/>
-        <property name="password" value=""/>
-    </bean>
+    <import resource="datasource-test.xml"/>
 
     <!-- Session factory -->
     <bean id="sessionFactory"
@@ -34,7 +27,8 @@
             <props>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">create</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect
+                </prop>
             </props>
         </property>
     </bean>

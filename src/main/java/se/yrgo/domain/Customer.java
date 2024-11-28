@@ -2,6 +2,7 @@ package se.yrgo.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -43,10 +44,6 @@ public class Customer {
 
     public void addCall(Call callDetails) {
         this.calls.add(callDetails);
-    }
-
-    public String toString() {
-        return this.customerId + ": " + this.companyName;
     }
 
     public String getCustomerId() {
@@ -95,6 +92,25 @@ public class Customer {
 
     public void setCalls(List<Call> calls) {
         this.calls = calls;
+    }
+
+    @Override
+    public String toString() {
+        return this.customerId + ": " + this.companyName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(customerId, customer.customerId)
+                && Objects.equals(companyName, customer.companyName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerId, companyName);
     }
 
     // needed for JPA - ignore until then
