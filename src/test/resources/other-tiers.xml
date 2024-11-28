@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans.xsd
+					http://www.springframework.org/schema/aop
+					http://www.springframework.org/schema/aop/spring-aop.xsd
+					http://www.springframework.org/schema/tx
+					http://www.springframework.org/schema/tx/spring-tx.xsd
+					http://www.springframework.org/schema/context
+					https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="datasource-test.xml"/>
+
+    <!-- Session factory -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <list>
+                <value>se.yrgo</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Jdbc template -->
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate"
+          autowire="constructor"/>
+
+    <!-- Transaction Manager -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager"
+          autowire="byName"/>
+
+    <!-- Transaction Configuration -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- Advice -->
+    <bean id="performanceTimingAdvice"
+          class="se.yrgo.advice.PerformanceTimingAdvice"/>
+    <aop:config>
+        <aop:aspect ref="performanceTimingAdvice">
+            <aop:around method="performTimingMeasurement"
+                        pointcut="execution(*
+                                       se.yrgo.services..*.*(..))
+                                       || execution(* se.yrgo.dataaccess..*(..))"/>
+        </aop:aspect>
+    </aop:config>
+    <context:component-scan base-package="se.yrgo"/>
+</beans>
